@@ -10,17 +10,14 @@
 
 #define USERNAMExMESSAGE ": "
 
-
-//General
+// General
 #define TRUE 1
 #define FALSE 0
-
 
 #define SYSERR -1
 #define OK 0
 
-
-//color
+// Colors
 #define NCOLORS 12
 #define RED   "\x1B[31m"
 #define GREEN   "\x1B[32m"
@@ -36,4 +33,3 @@
 #define LCYAN   "\x1B[96m"
 #define WHITE  "\x1B[37m"
 #define RESET "\x1B[0m"
-
