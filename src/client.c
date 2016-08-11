@@ -108,7 +108,7 @@ int main(int argc, char *argv[]) {
     return OK;
 }
 
-void* sender() {
+void *sender() {
     while(1) {
         bzero(sendBuffer, BUF_SIZE);
         fgets(sendBuffer, BUF_SIZE, stdin);
@@ -132,8 +132,9 @@ void* sender() {
     }
 }
 
-void* receiver() {
+void *receiver() {
     int nbytes;
+
     while(1) {
         bzero(receiveBuffer, BUF_SIZE);
 

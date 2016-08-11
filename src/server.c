@@ -249,15 +249,18 @@ int main(int argc, char *argv[]) {
                     broadcast(sender_addr, TRUE);       //when sender is NULL it will broadcast to everyone in the client list
                 }
                 printClientList();
-            } else if(strcmp(EXIT, requestBuffer) == 0) {
+            }
+            else if(strcmp(EXIT, requestBuffer) == 0) {
                 strcat(responseBuffer, RED " shutdown the server" RESET "\n");
                 broadcast(sender_addr, TRUE);
                 printf("Exiting Server\n");
                 close(sockfd);
                 exit(OK);
-            } else if(strcmp(LIST, requestBuffer) == 0) {
+            }
+            else if(strcmp(LIST, requestBuffer) == 0) {
                 sendClientList(sender_addr);
-            } else {
+            }
+            else {
                 strcat(responseBuffer, RESET);
                 strcat(responseBuffer, USERNAMExMESSAGE);       //inserts string between username and message to look nice
                 strcat(responseBuffer, requestBuffer);
@@ -266,7 +269,8 @@ int main(int argc, char *argv[]) {
                 //go through entire linked list and echo back the message to all clients connected with proper username of the sender
                 broadcast(sender_addr, FALSE);  //sends message to all except sender
             }
-        } else {
+        }
+        else {
 
             if(connectClient(sender_addr, requestBuffer) == OK) {
                 userColor(sender_addr.sin_port);
