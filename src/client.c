@@ -26,8 +26,7 @@ void *receiver();               // thread function that will listen for received
 char sendBuffer[BUF_SIZE];
 char receiveBuffer[BUF_SIZE + USERNAME_LEN + 2];
 
-int
-main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
     bzero(sendBuffer, BUF_SIZE);        //zero out both buffers
     bzero(receiveBuffer, BUF_SIZE + USERNAME_LEN + 2);
 
@@ -79,14 +78,15 @@ main(int argc, char *argv[]) {
         fprintf(stderr, "Failed to connect to remote server!\n");
         exit(EXIT_FAILURE);
     }
-    // Create and send out open message to the server so it knows our username and we are identified as a connected client
 
+    // Create and send out open message to the server so it knows our username and we are identified as a connected client
     strcpy(sendBuffer, username);
     if(send(sockfd, sendBuffer, strlen(sendBuffer), 0) == SYSERR) {
         perror("send");
         close(sockfd);
         exit(EXIT_FAILURE);
     }
+
     //create threads
     //Thread 1: takes in user input and sends out messages
     //Thread 2: listens for messages that are comming in from the server and prints them to screen
@@ -108,12 +108,9 @@ main(int argc, char *argv[]) {
     return OK;
 }
 
-void *
-sender() {
-
+void* sender() {
     while(1) {
         bzero(sendBuffer, BUF_SIZE);
-
         fgets(sendBuffer, BUF_SIZE, stdin);
 
         //send message to server 
@@ -123,22 +120,20 @@ sender() {
             pthread_mutex_destroy(&mutexsum);
             pthread_exit(NULL);
         }
+
         // Check for quiting
         if(strcmp(sendBuffer, CLOSE) == 0 || strcmp(sendBuffer, EXIT) == 0) {
-
             done = TRUE;
             pthread_mutex_destroy(&mutexsum);
             pthread_exit(NULL);
-
         }
+
         pthread_mutex_unlock(&mutexsum);
     }
 }
 
-void *
-receiver() {
+void* receiver() {
     int nbytes;
-
     while(1) {
         bzero(receiveBuffer, BUF_SIZE);
 
@@ -149,6 +144,7 @@ receiver() {
             pthread_mutex_destroy(&mutexsum);
             pthread_exit(NULL);
         }
+
         receiveBuffer[nbytes] = '\0';
         printf("%s", receiveBuffer);
         pthread_mutex_unlock(&mutexsum);

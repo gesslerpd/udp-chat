@@ -1,3 +1,5 @@
+/* server */
+
 #include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -29,14 +31,12 @@ char *colors[NCOLORS] = { RED, GREEN, YELLOW, BLUE, MAGENTA,
     LCYAN
 };
 
-void
-userColor(int n) {
+void userColor(int n) {
     strcat(responseBuffer, colors[(n % NCOLORS)]);
 }
 
 /* function returns true if the two passes internet address are identical */
-int
-clientCompare(struct sockaddr_in client1, struct sockaddr_in client2) {
+int clientCompare(struct sockaddr_in client1, struct sockaddr_in client2) {
     if(strncmp
        ((char *) &client1.sin_addr.s_addr, (char *) &client2.sin_addr.s_addr,
         sizeof(unsigned long)) == 0) {
@@ -54,9 +54,8 @@ clientCompare(struct sockaddr_in client1, struct sockaddr_in client2) {
 }
 
 /* sends message to all clients except for the sender */
-/* wil send to all clients if second argument `global` is set to TRUE */
-void
-broadcast(struct sockaddr_in sender, int global) {
+/* will send to all clients if second argument `global` is set to TRUE */
+void broadcast(struct sockaddr_in sender, int global) {
     client *cli = clientList.next;      //client list iterator
 
     while(cli != NULL) {
@@ -77,8 +76,7 @@ broadcast(struct sockaddr_in sender, int global) {
     }
 }
 
-int
-isConnected(struct sockaddr_in newClient) {
+int isConnected(struct sockaddr_in newClient) {
     client *element = &clientList;
 
     while(element != NULL) {
@@ -95,8 +93,7 @@ isConnected(struct sockaddr_in newClient) {
 
 /* Used to add new clients dynamically to our server's client linked list */
 /* connects a client to the server */
-int
-connectClient(struct sockaddr_in newClient, char *username) {
+int connectClient(struct sockaddr_in newClient, char *username) {
     printf("Attempting to connect client: %s\n", username);
     client *element = &clientList;
 
@@ -107,6 +104,7 @@ connectClient(struct sockaddr_in newClient, char *username) {
         }
         element = element->next;
     }
+
     element = &clientList;
     while(element->next != NULL) {
         element = element->next;
@@ -123,8 +121,7 @@ connectClient(struct sockaddr_in newClient, char *username) {
 
 /* Used to remove clients dynamically from our server's client linked list */
 /* disconnects a client from the server */
-int
-disconnectClient(struct sockaddr_in oldClient) {
+int disconnectClient(struct sockaddr_in oldClient) {
     printf("Attempting to disconnect client\n");
     client *temp;
     client *element = &clientList;
@@ -139,13 +136,13 @@ disconnectClient(struct sockaddr_in oldClient) {
         }
         element = element->next;
     }
+
     printf("Client was not disconnected properly\n");
     return SYSERR;
 }
 
 /* Prints out the server's client list for debugging */
-void
-printClientList() {
+void printClientList() {
     client *cli = clientList.next;
     int count = 1;
 
@@ -159,8 +156,7 @@ printClientList() {
     }
 }
 
-void
-sendClientList(struct sockaddr_in sender) {
+void sendClientList(struct sockaddr_in sender) {
     client *cli = clientList.next;
 
     while(cli != NULL) {
@@ -183,8 +179,7 @@ sendClientList(struct sockaddr_in sender) {
 }
 
 /* Main Server Process */
-int
-main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
 
     int server_port, nbytes;
     int address_size = sizeof(struct sockaddr_in);
@@ -212,6 +207,7 @@ main(int argc, char *argv[]) {
         fprintf(stderr, "Failed to get socket file descriptor\n");
         exit(EXIT_FAILURE);
     }
+
     server_addr.sin_family = AF_INET;   //address family we should use for this assignment
     server_addr.sin_port = htons(server_port);  //flips port argument to big endian and assigns to our port
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY);    //binds socket to all the computers interfaces
@@ -269,7 +265,6 @@ main(int argc, char *argv[]) {
                 printf("Message:\n[%s]\n", responseBuffer);
                 //go through entire linked list and echo back the message to all clients connected with proper username of the sender
                 broadcast(sender_addr, FALSE);  //sends message to all except sender
-
             }
         } else {
 
