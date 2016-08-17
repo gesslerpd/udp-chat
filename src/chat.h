@@ -8,6 +8,8 @@
 
 #define LIST "list\n"
 
+#define ERROR "error\n"
+
 #define USERNAMExMESSAGE ": "
 
 // General

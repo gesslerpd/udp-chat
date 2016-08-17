@@ -100,6 +100,15 @@ int connectClient(struct sockaddr_in newClient, char *username) {
     while(element != NULL) {
         if(strcmp(element->username, username) == 0) {
             printf("Cannot connect client user already exists\n");
+            strcpy(responseBuffer, "");
+            strcat(responseBuffer, ERROR);
+            if((sendto
+                (sockfd, responseBuffer, strlen(responseBuffer), 0, (struct sockaddr *) &newClient,
+                 sizeof(struct sockaddr))) == SYSERR) {
+                perror("sendto");
+                close(sockfd);
+                exit(EXIT_FAILURE);
+            }
             return SYSERR;
         }
         element = element->next;

@@ -147,7 +147,15 @@ void *receiver() {
         }
 
         receiveBuffer[nbytes] = '\0';
-        printf("%s", receiveBuffer);
-        pthread_mutex_unlock(&mutexsum);
+        if(strcmp(ERROR, receiveBuffer) == 0) {
+            printf("Error: The username %s is already taken.\n", sendBuffer);
+            done = TRUE;
+            pthread_mutex_destroy(&mutexsum);
+            pthread_exit(NULL);
+        }
+        else {
+            printf("%s", receiveBuffer);
+            pthread_mutex_unlock(&mutexsum);
+        }
     }
 }
