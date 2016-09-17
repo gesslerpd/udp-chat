@@ -17,7 +17,7 @@ $ make client
 ```
 or
 ```bash
-$ gcc -o client src/client.c -lpthread
+$ gcc -o client src/client.c -pthread
 ```
 
 #### Server
