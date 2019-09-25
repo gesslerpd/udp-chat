@@ -3,7 +3,7 @@
 Chat server and client using the User Datagram Protocol (UDP)
 
 
-![screenshot](https://raw.githubusercontent.com/gesslerpd/udp-chat/master/screenshots/chat.png)
+![screenshot](https://user-images.githubusercontent.com/11217948/65564084-6c8b0900-df11-11e9-96cb-d08c7522cafc.png)
 
 
 ## Building
